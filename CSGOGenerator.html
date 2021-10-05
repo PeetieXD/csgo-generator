@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CS:GO Chat Generator</title>
+		<style>
+			.unselectable {
+				-webkit-user-select: none;
+				-webkit-touch-callout: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				color: #cc0000;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 
+		✔️	Radio commands kiezen
+		✔️	Dropdown menu kleuren		
+		✔️	Text invoer
+		✔️	Kopieren van command met button
+		
+		❌	+ Knop voor nieuwe color en text
+		✔️	Knife of rare checkbox
+		✔️	StatTrak trademark checkbox
+		✔️	Weapon checkbox
+		✔️	Met of zonder player indicator (cirkel voor text)
+		
+		✔️	Toggle knop voor name en name textbox
+		❌	History bijhouden
+		❌	Presets
+		❌	Tooltip on copy
+		-->
+		<script>
+			window.onload = function (){
+				for (var i = 0; i < RadioArray.length; i++){
+					var radioOption = document.createElement("option");
+					radioOption.innerHTML = RadioArray[i];
+					radioOption.value = i;
+					document.getElementById("radioDropdown").add(radioOption);
+				}
+				
+				for (var i = 0; i < ColorArray.length; i++){
+					var colorOption = document.createElement("option");
+					colorOption.innerHTML = ColorNames[i];
+					colorOption.value = i;
+					document.getElementById("colorDropdown").add(colorOption);
+				}
+				
+				for (var i = 0; i < ColorArray.length; i++){
+					var weaponColorOption = document.createElement("option");
+					weaponColorOption.innerHTML = ColorNames[i];
+					weaponColorOption.value = i;
+					document.getElementById("weaponColorDropdown").add(weaponColorOption);
+				}
+				
+				for (var i = 0; i < ColorArray.length; i++){
+					var playerColorOption = document.createElement("option");
+					playerColorOption.innerHTML = ColorNames[i];
+					playerColorOption.value = i;
+					document.getElementById("playerColorDropdown").add(playerColorOption);
+				}
+				
+				// Turn disabled on load, probably a better way for this.
+				document.getElementById("playerColorDropdown").disabled = true;
+				document.getElementById("playerUsername").disabled = true;
+				document.getElementById("weaponText").disabled = true;
+				document.getElementById("weaponColorDropdown").disabled = true;
+				
+			}
+			var RadioArray = ["Affirmative", "Agree", "Radio.Affirmitive", "Radio.Num10"];
+			var ColorNames = ["Team Color", "White", "Grey", "Light Red", "Dark Red", "Covert Red", "Orchid", "Gold", "Light Green", "Lime", "Green", "Blue", "Dark Blue"];
+			var ColorArray = ["", 			"",	 "",	 "",			"",		 "",		 "",	 "", "",			 "", "", "", 	""];
+			// Line break seems buggy on many.
+			// Player indicator on grey seems buggy, only tested on grey.
+			
+			var RadioPrefix = "playerradio";
+			var RadioCommand = RadioArray[0];
+			var newLine = false;
+			var LinePrefix = "";
+			var PlayerIndicator = "";
+			var PlayerColor = "";
+			var PlayerName = "";
+			var UsernameChecked = false;
+			var ColorPrefix = "";
+			var TextLine = "Insert your own awesome quote here!";
+			var KnifePrefix = "";
+			var StPrefix = "";
+			var WeaponColor = "";
+			var weaponChecked = false;
+			var WeaponPrefix = "";
+			
+			function selectionChangedRadio(currentSelection){
+				RadioCommand = RadioArray[parseInt(currentSelection.value)];
+				createRadioCommand();
+			}
+
+			function selectionChangedLBreak(currentSelection){
+				if(currentSelection.checked){
+					LinePrefix = " ";
+				}
+				else{
+					LinePrefix = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionPlayerIndicator(currentSelection){
+				if(currentSelection.checked){
+					if(document.getElementById("colorDropdown").value == "0"){
+						PlayerIndicator = "";
+					}
+					else{
+						PlayerIndicator = "";
+					}
+				}
+				else{
+					PlayerIndicator = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionPlayerCheck(currentSelection){
+				if(currentSelection.checked){
+					UsernameChecked = true;
+					document.getElementById("playerColorDropdown").disabled = false;
+					document.getElementById("playerUsername").disabled = false;
+					selectionChangedPlayerColor(document.getElementById("playerColorDropdown"));
+					selectionChangedName(document.getElementById("playerUsername"));
+				}
+				else{
+					UsernameChecked = false;
+					PlayerColor = "";
+					PlayerName = "";
+					document.getElementById("playerColorDropdown").disabled = true;
+					document.getElementById("playerUsername").disabled = true;
+				}
+				createRadioCommand();
+			}
+			
+			function selectionChangedName(currentSelection){				
+				if(UsernameChecked){
+					if(currentSelection.value == ""){
+						PlayerName = "YourUserName";
+					}
+					else{
+						PlayerName = currentSelection.value;
+					}
+				}
+				else{
+					PlayerName = "";
+				}
+				PlayerName += " ";
+				createRadioCommand();
+			}
+			
+			function selectionChangedPlayerColor(currentSelection){
+				PlayerColor = ColorArray[parseInt(currentSelection.value)];
+				selectionPlayerIndicator(document.getElementById("playerIndicatorCheck"));
+				createRadioCommand();
+			}			
+						
+			function selectionChangedColor(currentSelection){
+				ColorPrefix = ColorArray[parseInt(currentSelection.value)];
+				selectionPlayerIndicator(document.getElementById("playerIndicatorCheck"));
+				createRadioCommand();
+			}
+			
+			function selectionChangedText(currentSelection){
+				TextLine = currentSelection.value;
+				createRadioCommand();
+			}
+			
+			function selectionChangedKnife(currentSelection){
+				if(currentSelection.checked){
+					KnifePrefix = "★ ";
+				}
+				else{
+					KnifePrefix = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionChangedStatTrak(currentSelection){
+				if(currentSelection.checked){
+					StPrefix = "StatTrak™ ";
+				}
+				else{
+					StPrefix = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionWeaponChecked(currentSelection){
+				if(currentSelection.checked){
+					document.getElementById("weaponText").disabled = false;
+					document.getElementById("weaponColorDropdown").disabled = false;
+					weaponChecked = true;
+					selectionChangedWeaponText(document.getElementById("weaponText"));
+					selectionChangedWeaponColor(document.getElementById("weaponColorDropdown"));
+				}
+				else{
+					document.getElementById("weaponText").disabled = true;
+					document.getElementById("weaponColorDropdown").disabled = true;
+					weaponChecked = false;
+					WeaponPrefix = "";
+					WeaponColor = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionChangedWeaponText(currentSelection){
+				if(weaponChecked){
+					if(currentSelection.value == ""){
+						WeaponPrefix = "Your Weapon | Of Choice";
+					}
+					else{
+						WeaponPrefix = currentSelection.value;
+					}
+				}
+				else{
+					WeaponPrefix = "";
+				}
+				createRadioCommand();
+			}
+			
+			function selectionChangedWeaponColor(currentSelection){
+				if(weaponChecked){
+					WeaponColor = ColorArray[parseInt(currentSelection.value)];
+				}
+				else{
+					WeaponColor = "";
+				}
+				createRadioCommand();
+			}
+			
+			function copyRadioCommand(){
+				var copyText = document.getElementById("result");
+				copyText.select();
+				copyText.setSelectionRange(0, 99999);
+				document.execCommand("copy");
+				// Add copyText to history array
+				
+				// Make a pop-up for this
+				// alert("Copied: " + copyText.value);
+			}
+			
+			function createRadioCommand(){
+				document.getElementById("result").value = RadioPrefix + " " + RadioCommand + ' "' + LinePrefix + PlayerIndicator + PlayerColor + PlayerName + ColorPrefix + TextLine + WeaponColor + KnifePrefix + StPrefix + WeaponPrefix + '"';
+			}
+			
+		</script>
+		
+		<label>Choose voice line: </label>
+		<select onchange="selectionChangedRadio(this)" name="radio" id="radioDropdown"></select>
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionChangedLBreak(this)" id="linebreakCheck">
+		<label for="linebreakCheck">Start on new line?</label>
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionPlayerIndicator(this)" id="playerIndicatorCheck">
+		<label for="playerIndicatorCheck">Player indicator? (Competitive only)</label>
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionPlayerCheck(this)" id="playerNameCheck">
+		<label for="playerNameCheck">Player?</label>
+		<input type="text" oninput="selectionChangedName(this)" placeholder="Your username here..." id="playerUsername">
+		<label>Choose your player color: </label>
+		<select onchange="selectionChangedPlayerColor(this)" name="playerColor" id="playerColorDropdown"></select>
+		<br><br>
+
+		<label>Choose your color: </label>
+		<select onchange="selectionChangedColor(this)" name="color" id="colorDropdown"></select>
+		<br><br>
+		
+		<input type="text" oninput="selectionChangedText(this)" placeholder="Your custom text here...">
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionChangedKnife(this)" id="knifeCheck">
+		<label for="knifeCheck">Knife?</label>
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionChangedStatTrak(this)" id="stCheck">
+		<label for="stCheck">StatTrak™?</label>
+		<br><br>
+		
+		<input type="checkbox" onclick="selectionWeaponChecked(this)" id="weaponCheck">
+		<label for="weaponCheck">Weapon?: </label>
+		<input type="text" oninput="selectionChangedWeaponText(this)" placeholder="Your Weapon | Of Choice" id="weaponText">
+		<label>Weapon color: </label>
+		<select onchange="selectionChangedWeaponColor(this)" name="weaponColor" id="weaponColorDropdown"></select>
+		<br><br>
+		
+		<br><br>
+		<button onclick="copyRadioCommand()" value="Copy Radio Command">Copy Radio Command</button>
+		<br><br>
+		
+		<div class="unselectable">
+			<input type="text" id="result" placeholder="Result Radio Command" size="100" onpaste="return false;" onCut="return false" onDrag="return false" onDrop="return false" readonly>
+		</div>
+	</body>
+</html>
