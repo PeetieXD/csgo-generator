@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>CS:GO Chat Generator</title>
-		<link rel="stylesheet" href="css/main.css">
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap" rel="stylesheet"> 
-		<link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet"> 
-	</head>
-	<body>
-		<style id="mainStyle"></style>
-		<!-- 
-		✔️	Radio commands kiezen
-		✔️	Dropdown menu kleuren		
-		✔️	Text invoer
-		✔️	Kopieren van command met button
-		
-		❌	+ Knop voor nieuwe color en text
-		✔️	Knife of rare checkbox
-		✔️	StatTrak trademark checkbox
-		✔️	Weapon checkbox
-		✔️	Met of zonder player indicator (cirkel voor text)
-		
-		✔️	Toggle knop voor name en name textbox
-		❌	History bijhouden
-		✔️❌Presets
-		
-		❌	Alert on copy
-		❌  Search on dropdown radio commands
-		
-		//  ResetAll()
-		//  ResetText()
-		//  Download as .cfg for keybind & explanation
-		//  Dropdown presets for country flags
-		-->
-		<div id="themeButtons">
-			<button id="themeButton1" onclick="setPageColor('lightTheme')"><span style="height: 25px; width: 25px; border: 1px solid grey; border-radius: 10px; background: linear-gradient(135deg, #fff, #d9d9d9); display: inline-block;"></span></button>
-			<button id="themeButton2" onclick="setPageColor('dreamyWorld')"><span style="height: 25px; width: 25px; border: 1px solid grey; border-radius: 10px; background: linear-gradient(135deg, #c0faf5, #e6c8ff); display: inline-block;"></span></button>
-			<button id="themeButton3" onclick="setPageColor('greenBeam')"><span style="height: 25px; width: 25px; border: 1px solid grey; border-radius: 10px; background: linear-gradient(135deg, #c4ffdd, #45ffa2); display: inline-block;"></span></button>
-		</div>
-		<main class="unselectable">
-			<script src="js/mainScript.js"></script> 
-			<!--<script>
-				window.onload = function (){
+window.onload = function (){
 					for (var i = 0; i < RadioArray.length; i++){
 						var radioOption = document.createElement("option");
 						radioOption.innerHTML = RadioArray[i];
@@ -131,7 +88,7 @@
 					
 					// Weapon text
 					*/
-				
+					
 				function setPageColor(themeName){
 					// Green Beam
 					if (themeName == "greenBeam"){
@@ -182,6 +139,8 @@
 						document.documentElement.style.setProperty("--color5", "#fff");
 						document.documentElement.style.setProperty("--textcolor", "#000");
 					}
+					// Neon Blue
+					// #05ffe8
 					
 				}
 				
@@ -248,6 +207,7 @@
 							document.getElementById("playerUsername").disabled = false;
 							selectionChanged(document.getElementById("playerColorDropdown"));
 							selectionChanged(document.getElementById("playerUsername"));
+							document.documentElement.style.setProperty("--buttonIndicatorColor4", "var(--buttonIndicatorOn)");
 						}
 						else{
 							UsernameChecked = false;
@@ -256,6 +216,7 @@
 							document.getElementById("playerDiv").className = "gridbox";
 							document.getElementById("playerColorDropdown").disabled = true;
 							document.getElementById("playerUsername").disabled = true;
+							document.documentElement.style.setProperty("--buttonIndicatorColor4", "var(--buttonIndicatorOff)");
 						}
 					}
 					if(currentSelection.id == "playerUsername"){
@@ -766,92 +727,3 @@
 				// Nein!
 				/* playerradio deathcry "RUSSIAAA  ▦▦▦▦▦▦▦▦▦▦  ▦▦▦▦▦▦▦▦▦▦  ▦▦▦▦▦▦▦▦▦▦" */
 				// Cheer! - Hahahahhaha all colors
-			</script>
-			-->
-			<div id="preLBDiv">
-				<label for="preLineBreak">Pre Line Break: </label>
-				<input type="text" oninput="selectionChanged(this)" placeholder="Cheer! or something similar..." id="preLineBreak">
-			</div>
-			
-			<div id="voicelineDiv">
-				<label>Choose voice line: </label>
-				<select onchange="selectionChanged(this)" name="radio" id="radioDropdown"></select>
-			</div>
-			
-			<div id="newLBDiv">
-				<input type="checkbox" onclick="selectionChanged(this)" id="lineBreakCheck">
-				<label for="lineBreakCheck">Start on new line?</label>
-				<div class="buttonIndicator" id="newLBI"></div>
-				<div class="buttonIndicatorR" id="newLBI"></div>
-			</div>
-			
-			<div id="playerIndicatorDiv">
-				<input type="checkbox" onclick="selectionChanged(this)" id="playerIndicatorCheck">
-				<label for="playerIndicatorCheck">Player indicator? (Competitive only)</label>
-				<div class="buttonIndicator" id="playerIndicatorI"></div>
-				<div class="buttonIndicatorR" id="playerIndicatorI"></div>
-			</div>
-			
-			<div class="gridbox" id="playerDiv">
-				<div id="playerCheckDiv">
-					<input type="checkbox" onclick="selectionChanged(this)" id="playerNameCheck">
-					<label for="playerNameCheck" id="playerNameLabel">Player?</label>
-					<div class="buttonIndicator" id="playerI"></div>
-					<div class="buttonIndicatorR" id="playerI"></div>
-				</div>
-				<input type="text" oninput="selectionChanged(this)" placeholder="Your player name here..." id="playerUsername">
-				<label for="playerColorDropdown" id="playerColorLabel">Player color: </label>
-				<select onchange="selectionChanged(this)" name="playerColor" id="playerColorDropdown"></select>
-			</div>
-
-			<div class="gridbox" id="textDiv">
-				<label for="colorDropdown" id="colorDropdownLabel">Choose your color: </label>
-				<select onchange="selectionChanged(this)" name="color" id="colorDropdown"></select>
-				<input type="text" oninput="selectionChanged(this)" placeholder="Your custom text here..." id="mainText">
-			</div>
-			
-			<div id="knifeDiv">
-				<input type="checkbox" onclick="selectionChanged(this)" id="knifeCheck">
-				<label for="knifeCheck">Knife? (Or just a star? ★)</label>
-				<div class="buttonIndicator" id="knifeI"></div>
-				<div class="buttonIndicatorR" id="knifeI"></div>
-			</div>
-			
-			<div id="stDiv">
-				<input type="checkbox" onclick="selectionChanged(this)" id="stCheck">
-				<label for="stCheck" id="stCheckLabel">StatTrak™?</label>
-				<div class="buttonIndicator" id="statTrakI"></div>
-				<div class="buttonIndicatorR" id="statTrakI"></div>
-			</div>
-			
-			<div class="gridbox" id="weaponDiv">
-				<div id="weaponCheckDiv">
-					<input type="checkbox" onclick="selectionChanged(this)" id="weaponCheck">
-					<label for="weaponCheck" id="weaponCheckLabel">Weapon?: </label>
-					<div class="buttonIndicator" id="weaponI"></div>
-					<div class="buttonIndicatorR" id="weaponI"></div>
-				</div>
-				<label for="weaponColorDropdown" id="weaponColorLabel">Weapon color: </label>
-				<select onchange="selectionChanged(this)" name="weaponColor" id="weaponColorDropdown"></select>
-				<input type="text" oninput="selectionChanged(this)" placeholder="Your Weapon | Of Choice" id="weaponText">
-			</div>
-			
-			<div id="resultText">
-				<button id="copyButton" onclick="copyRadioCommand()" value="Copy Radio Command">Copy Radio Command</button>
-				<input type="text" id="result" placeholder="Result Radio Command" size="100" onpaste="return false;" onCut="return false" onDrag="return false" onDrop="return false" readonly>
-			</div>
-			
-			<div class="gridbox" id="presetDiv">
-				<label id="presetLabel">Presets: </label>
-				<button id="preset1" onclick="savedYouBy()" value="Create savedYouBy Radio Command">X saved you by killing Y!</button>
-				<button id="preset2" onclick="gotVACCED()" value="Create gotVACCED Radio Command">X got VAC Banned.</button>
-				<button id="preset3" onclick="dayBan()" value="Create dayBan Radio Command">X got a 7 day ban.</button>
-				<button id="preset4" onclick="gotConvicted()" value="Create gotConvicted Radio Command">Account is Convicted.</button>
-				<button id="preset5" onclick="gotReward()" value="Create gotReward Radio Command">Awarded $ for X.</button>
-				<button id="preset6" onclick="friendDog()" value="Create friendDog Radio Command">YourFriend: I'm a doggie :P</button>
-				<button id="preset7" onclick="doMoan()" value="Create doMoan Radio Command">Moaning~</button>
-				<button id="preset8" onclick="openCase()" value="Create openCase Radio Command">X opened case and found Y.</button>
-			</div>
-		</main>
-	</body>
-</html>
