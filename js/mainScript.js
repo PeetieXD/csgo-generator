@@ -41,7 +41,7 @@ window.onload = function (){
 				// Line break seems buggy on many.
 				// Player indicator on grey seems buggy, only tested on grey.
 				
-				var RadioPrefix = "playerradio";
+				var RadioPrefix = "playerchatwheel";
 				var RadioCommand = RadioArray[0];
 				var preLineBreak = "";
 				var newLine = false;
